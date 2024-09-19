@@ -48,6 +48,10 @@
             width: 100%;
             bottom: 0;
         }
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
     </style>
     
     <!-- Inline JavaScript for tab functionality -->
@@ -71,6 +75,7 @@
     <!-- Header -->
     <header>
         <h1>Welcome to SeismicFlow</h1>
+        <p>Your comprehensive platform for AI-driven seismic data analysis.</p>
     </header>
 
     <!-- Navigation Tabs -->
@@ -83,31 +88,46 @@
 
     <!-- Tab Content -->
     <section>
+        <!-- Home Section -->
         <div id="home" class="tab-content">
             <h2>Home</h2>
-            <p>SeismicFlow is an all-in-one seismic processing application with built-in TensorFlow, PyTorch, and Scikit-learn functionalities. Streamline your seismic workflows with ease.</p>
+            <p>SeismicFlow is an all-in-one seismic and well analysis application with built-in TensorFlow, PyTorch, and Scikit-learn functionalities. It allows seamless integration of machine learning and AI tools for advanced seismic analysis. From well log analysis to fault prediction, clustering, and 3D visualization, SeismicFlow simplifies complex workflows while providing cutting-edge capabilities.</p>
         </div>
+
+        <!-- About Section -->
         <div id="about" class="tab-content" style="display: none;">
             <h2>About</h2>
-            <p>SeismicFlow was created by Matin Mahzad, a geophysics PhD candidate, with the aim of integrating AI into seismic processing and interpretation workflows.</p>
+            <p>SeismicFlow was created by Matin Mahzad, a geophysics PhD candidate, with the goal of integrating AI into seismic processing and interpretation workflows. Matin specializes in the application of machine learning to seismic data, transforming seismic interpretation by providing AI-driven tools for quantitative analysis.</p>
         </div>
+
+        <!-- Features Section -->
         <div id="features" class="tab-content" style="display: none;">
             <h2>Features</h2>
             <ul>
-                <li>Seismic data processing with TensorFlow</li>
-                <li>Integrated machine learning algorithms</li>
-                <li>Customizable workflows</li>
+                <li><strong>Facies Prediction Module:</strong> Neural network-based Facies segmentation, 2D/3D visualization, and GPU-accelerated inference.</li>
+                <li><strong>Denoising Module:</strong> Neural network-based and non-neural network-based denoising, 2D/3D visualization, and GPU-accelerated inference.</li>
+                <li><strong>Fault Prediction Module:</strong> Neural network-based fault segmentation, 2D/3D visualization, and GPU-accelerated inference.</li>
+                <li><strong>Well Log Analysis:</strong> Crossplots, regression, clustering (13 algorithms), and categorization of well logs with traditional and neural network models.</li>
+                <li><strong>Petrophysical Characterization:</strong> Integration of well log and seismic data, 3D petrophysical property predictions, and facies categorization.</li>
+                <li><strong>Customizable Workflows:</strong> Design your own neural network models, apply Bayesian optimization for hyperparameter tuning, and visualize results in 3D.</li>
+                <li><strong>Clustering:</strong> Advanced clustering techniques, including self-organizing maps (SOM) and deep embedded clustering (DEC).</li>
+                <li><strong>Multi-Language Capable:</strong> The application works with C++, Python, and JavaScript, allowing you to develop and add plugins in any of these languages.</li>
+                <li><strong>Plugin Development:</strong> Create your plugins with C++, Python, or JavaScript and continue building on this application.</li>
+                <li><strong>Inter-Plugin Communication:</strong> Plugins can communicate with the main application using methods such as sockets and server-client protocols.</li>
             </ul>
         </div>
+
+        <!-- Contact Section -->
         <div id="contact" class="tab-content" style="display: none;">
             <h2>Contact</h2>
-            <p>Contact us at MatinMahzad@yahoo.com</p>
+            <p>If you would like to learn more or collaborate, feel free to reach out:</p>
+            <p>Email: <a href="mailto:matinmahzad@yahoo.com">matinmahzad@yahoo.com</a></p>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 SeismicFlow. All rights reserved.</p>
+        <p>&copy; 2024 SeismicFlow. All rights reserved. Developed by Matin Mahzad.</p>
     </footer>
 
 </body>
