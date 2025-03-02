@@ -6,8 +6,9 @@ Installation and Usage
 
 Requirements
 
-•	Python Version: Python 3.10 (tested)
-•	Dependencies: Ensure all required libraries are installed. They are listed at the beginning of the script.
+Python Version: Python 3.10 (tested)
+
+Dependencies: Ensure all required libraries are installed. They are listed at the beginning of the script.
 
 Running the Application
 
@@ -23,5 +24,7 @@ python SeismicFlow.py
 Once executed, the GUI will launch, and you can start using the application immediately.
 
 Notes
-•	The application is a single-file script (.py). No additional setup is required.
-•	Ensure Python 3.10 is in your system’s PATH.
+
+The application is a single-file script (.py). No additional setup is required.
+
+Ensure Python 3.10 is in your system’s PATH.
