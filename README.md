@@ -124,7 +124,7 @@ YourFolder/
 
 **Issue**: Installation fails or gets stuck  
 **Solution**: 
-- Check your internet connection (installer downloads ~3GB of packages)
+- Check your internet connection
 - Ensure you have sufficient disk space (8 GB required)
 - Run Command Prompt as Administrator if you encounter permission errors
 
@@ -168,6 +168,7 @@ After installation, when you run `SeismicFlow.bat`, you should see:
 
 For tutorials, updates, and support:
 - **YouTube**: [https://www.youtube.com/@Seismicflow-inc](https://www.youtube.com/@Seismicflow-inc)
+- **Email**: seismicflowinc@gmail.com
 
 If you encounter any issues:
 1. Ensure you downloaded ALL required files
