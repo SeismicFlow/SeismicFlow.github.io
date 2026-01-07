@@ -24,6 +24,11 @@ Download ALL of these files from the repository and place them in the same folde
 - `SeismicFlow.py` (main application)
 - `install.py` (automated installer)
 - `requirements.txt` (dependencies list)
+- `seismic_processing.cp310-win_amd64.pyd` (compiled module)
+
+### Optional Reference Files (Not Required):
+- `seismic_processing.pyx` (source code for compiled module - for educational purposes)
+- `setupseismic_processing.py` (build script for compiled module - for educational purposes)
 
 ### GUI Assets (Required):
 - `splash.png`
