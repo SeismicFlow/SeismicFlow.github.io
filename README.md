@@ -10,7 +10,7 @@ SeismicFlow is a standalone GUI application for geophysical and well data analys
 
 - **Operating System**: Windows 10/11 (64-bit)
 - **Python**: Any version of Python to run the installer (installer will set up Python 3.10 automatically)
-- **Disk Space**: Approximately 3-4 GB for complete installation
+- **Disk Space**: Approximately 8 GB for complete installation
 - **GPU (Optional)**: NVIDIA GPU with CUDA 11.7 for faster neural network processing
   - **Note**: GPU is NOT required - the application runs perfectly on CPU only
   - GPU acceleration only speeds up neural network algorithms
@@ -124,8 +124,8 @@ YourFolder/
 
 **Issue**: Installation fails or gets stuck  
 **Solution**: 
-- Check your internet connection (installer downloads ~2GB of packages)
-- Ensure you have sufficient disk space (3-4 GB required)
+- Check your internet connection (installer downloads ~3GB of packages)
+- Ensure you have sufficient disk space (8 GB required)
 - Run Command Prompt as Administrator if you encounter permission errors
 
 **Issue**: SeismicFlow.bat doesn't launch the application  
