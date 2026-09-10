@@ -1,4 +1,6 @@
-{
-  "name": "SeismicFlow",
-  "download_url": "https://github.com/SeismicFlow/SeismicFlow.github.io/releases/tag/v1.4.5/Update.zip"
-}
+[
+  {
+    "name": "SeismicFlow",
+    "download_url": "https://github.com/SeismicFlow/SeismicFlow.github.io/releases/download/v1.4.5/Update.zip"
+  }
+]
