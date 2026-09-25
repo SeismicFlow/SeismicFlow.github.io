@@ -2,7 +2,31 @@
 
 **The First Production-Grade Python-Native GUI Platform for Integrated Geoscience Workflows**
 
+[![DOI](https://img.shields.io/badge/DOI-10.1190%2FGEO--2025--1020-blue)](https://doi.org/10.1190/GEO-2025-1020)
+[![Published in Geophysics](https://img.shields.io/badge/Published%20in-Geophysics-1a6bff)](https://doi.org/10.1190/GEO-2025-1020)
+
 SeismicFlow is a standalone GUI application for geophysical and well data analysis, designed for scientists and researchers who want flexibility in algorithm development.
+
+## Citation
+
+SeismicFlow has been peer-reviewed and published in *Geophysics*:
+
+> Mahzad, M. (2026). SeismicFlow: The first production-grade Python-native GUI platform for integrated geoscience workflows. *Geophysics*, 91(6), F13–F21. https://doi.org/10.1190/GEO-2025-1020
+
+If SeismicFlow is useful in your research, please cite the paper above. BibTeX:
+
+```bibtex
+@article{Mahzad2026SeismicFlow,
+  author  = {Mahzad, M.},
+  title   = {SeismicFlow: The first production-grade Python-native GUI platform for integrated geoscience workflows},
+  journal = {Geophysics},
+  year    = {2026},
+  volume  = {91},
+  number  = {6},
+  pages   = {F13--F21},
+  doi     = {10.1190/GEO-2025-1020}
+}
+```
 
 ## System Requirements
 

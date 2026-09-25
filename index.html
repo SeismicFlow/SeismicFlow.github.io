@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SeismicFlow</title>
-  <meta name="description" content="The first Python-native, production-grade GUI platform for integrated geoscience workflows. Free. Open source.">
+  <meta name="description" content="The first Python-native, production-grade GUI platform for integrated geoscience workflows. Free. Open source. Peer-reviewed and published in Geophysics.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -239,6 +239,84 @@
       color: var(--signal);
     }
 
+    /* ── Publication badge (hero) ─────────────────────────── */
+    .pub-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--pulse);
+      text-decoration: none;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(0,212,170,0.35);
+      border-radius: 999px;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      animation: rise 0.9s 0.1s forwards;
+      transition: all 0.25s;
+    }
+
+    .pub-badge:hover {
+      background: rgba(0,212,170,0.1);
+      border-color: var(--pulse);
+    }
+
+    .pub-badge svg { flex-shrink: 0; }
+
+    /* ── Publication section ──────────────────────────────── */
+    .pub-card {
+      position: relative;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(244,241,235,0.1);
+      border-left: 3px solid var(--pulse);
+      border-radius: 4px;
+      padding: 2.2rem 2.4rem;
+    }
+
+    .pub-journal {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--pulse);
+      margin-bottom: 1rem;
+    }
+
+    .pub-citation {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: rgba(244,241,235,0.9);
+      max-width: 640px;
+      margin-bottom: 1.8rem;
+    }
+
+    .pub-citation a {
+      color: var(--signal);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(26,107,255,0.4);
+    }
+
+    .pub-citation a:hover { border-color: var(--signal); }
+
+    .pub-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary, .btn-secondary {
+      cursor: pointer;
+      font: inherit;
+      font-family: 'DM Mono', monospace;
+    }
+
+    button.btn-secondary {
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+    }
+
     /* ── Divider ──────────────────────────────────────────── */
     .divider {
       position: relative;
@@ -350,6 +428,10 @@
 
 <!-- ── Hero ─────────────────────────────────────────────── -->
 <section class="hero">
+  <a href="#publication" class="pub-badge">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2zm0 4.2 7.5 13H4.5L12 6.2z"/></svg>
+    Published in Geophysics · Vol. 91, No. 6
+  </a>
   <p class="eyebrow">Portable Windows Version · Free · Open Source</p>
   <h1><span>Seismic</span><span>Flow</span></h1>
   <p class="tagline">
@@ -391,6 +473,33 @@
 
 <div class="divider"></div>
 
+<!-- ── Publication ───────────────────────────────────────── -->
+<div class="section" id="publication">
+  <p class="section-label">// publication</p>
+  <h2 class="section-title">Peer-reviewed &amp; published</h2>
+
+  <div class="pub-card">
+    <p class="pub-journal">GEOPHYSICS · Vol. 91, No. 6 (2026) · pp. F13&ndash;F21</p>
+    <p class="pub-citation">
+      Mahzad, M. (2026). SeismicFlow: The first production-grade Python-native GUI platform for integrated geoscience workflows.
+      <em>Geophysics</em>, 91(6), F13&ndash;F21.
+      <a href="https://doi.org/10.1190/GEO-2025-1020" target="_blank">doi.org/10.1190/GEO-2025-1020</a>
+    </p>
+    <div class="pub-actions">
+      <a href="https://doi.org/10.1190/GEO-2025-1020" class="btn-primary" target="_blank">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        Read the Paper
+      </a>
+      <button class="btn-secondary" onclick="copyCitation()" id="cite-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        Copy BibTeX
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
 <!-- ── Contact ───────────────────────────────────────────── -->
 <div class="contact">
   <div class="contact-left">
@@ -411,7 +520,7 @@
 
 <!-- ── Footer ─────────────────────────────────────────────── -->
 <footer>
-  SeismicFlow (in press). <em>Geophysics</em>.
+  Mahzad, M. (2026). SeismicFlow. <em>Geophysics</em>, 91(6), F13&ndash;F21. doi.org/10.1190/GEO-2025-1020
 </footer>
 
 <script>
@@ -430,6 +539,31 @@
 
   function nextVideo() {
     setVideo((current + 1) % videos.length);
+  }
+
+  const bibtex = `@article{Mahzad2026SeismicFlow,
+  author  = {Mahzad, M.},
+  title   = {SeismicFlow: The first production-grade Python-native GUI platform for integrated geoscience workflows},
+  journal = {Geophysics},
+  year    = {2026},
+  volume  = {91},
+  number  = {6},
+  pages   = {F13--F21},
+  doi     = {10.1190/GEO-2025-1020}
+}`;
+
+  function copyCitation() {
+    const btn = document.getElementById('cite-btn');
+    const original = btn.innerHTML;
+    const done = () => {
+      btn.innerHTML = 'Copied!';
+      setTimeout(() => { btn.innerHTML = original; }, 1800);
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(bibtex).then(done).catch(() => window.prompt('Copy BibTeX:', bibtex));
+    } else {
+      window.prompt('Copy BibTeX:', bibtex);
+    }
   }
 </script>
 
