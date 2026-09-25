@@ -5,11 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SeismicFlow</title>
   <meta name="description" content="The first Python-native, production-grade GUI platform for integrated geoscience workflows. Free. Open source. Peer-reviewed and published in Geophysics.">
+  <link rel="icon" type="image/png" href="icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --ink:     #0a0a0f;
+      --ink-2:   #101018;
       --paper:   #f4f1eb;
       --signal:  #1a6bff;
       --pulse:   #00d4aa;
@@ -40,17 +42,108 @@
 
     .trace-bg svg { width: 100%; height: 100%; }
 
+    /* ── Ambient glow blobs ────────────────────────────────── */
+    .glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .glow-a {
+      width: 480px; height: 480px;
+      top: -120px; right: -80px;
+      background: radial-gradient(circle, rgba(26,107,255,0.35), transparent 70%);
+      animation: drift 16s ease-in-out infinite;
+    }
+
+    .glow-b {
+      width: 420px; height: 420px;
+      bottom: -140px; left: -100px;
+      background: radial-gradient(circle, rgba(0,212,170,0.28), transparent 70%);
+      animation: drift 20s ease-in-out infinite reverse;
+    }
+
+    @keyframes drift {
+      0%, 100% { transform: translate(0, 0); }
+      50%      { transform: translate(40px, 30px); }
+    }
+
+    /* ── Nav ──────────────────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 2rem;
+      background: rgba(10,10,15,0);
+      border-bottom: 1px solid transparent;
+      backdrop-filter: blur(0px);
+      transition: background 0.3s, border-color 0.3s, backdrop-filter 0.3s;
+    }
+
+    .nav.scrolled {
+      background: rgba(10,10,15,0.72);
+      border-bottom: 1px solid rgba(244,241,235,0.08);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+      color: var(--paper);
+      text-decoration: none;
+    }
+
+    .nav-logo img { width: 22px; height: 22px; object-fit: contain; }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: rgba(244,241,235,0.6);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--pulse); }
+
+    .nav-gh {
+      display: flex;
+      align-items: center;
+      color: var(--paper);
+      opacity: 0.85;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .nav-gh:hover { opacity: 1; transform: translateY(-1px); }
+
+    @media (max-width: 720px) {
+      .nav-links { display: none; }
+    }
+
     /* ── Hero ─────────────────────────────────────────────── */
     .hero {
       position: relative;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 4rem 2rem;
+      padding: 7rem 2rem 4rem;
       z-index: 1;
+      overflow: hidden;
     }
 
     .hero::after {
@@ -61,7 +154,47 @@
       background: linear-gradient(90deg, transparent, var(--signal), var(--pulse), transparent);
     }
 
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 1180px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .hero-copy { text-align: left; }
+
+    .pub-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      color: var(--pulse);
+      text-decoration: none;
+      padding: 0.4rem 0.9rem;
+      border: 1px solid rgba(0,212,170,0.35);
+      border-radius: 999px;
+      margin-bottom: 1.6rem;
+      opacity: 0;
+      animation: rise 0.9s 0.1s forwards;
+      transition: all 0.25s;
+    }
+
+    .pub-badge:hover {
+      background: rgba(0,212,170,0.1);
+      border-color: var(--pulse);
+    }
+
+    .pub-badge svg { flex-shrink: 0; }
+
     .eyebrow {
+      display: block;
       font-family: 'DM Mono', monospace;
       font-size: 0.72rem;
       letter-spacing: 0.22em;
@@ -73,9 +206,9 @@
     }
 
     h1 {
-      font-size: clamp(4rem, 12vw, 9rem);
+      font-size: clamp(3.2rem, 7vw, 6.4rem);
       font-weight: 800;
-      line-height: 0.9;
+      line-height: 0.92;
       letter-spacing: -0.03em;
       margin-bottom: 1.6rem;
       opacity: 0;
@@ -92,12 +225,12 @@
 
     .tagline {
       font-family: 'DM Mono', monospace;
-      font-size: clamp(0.8rem, 1.5vw, 1rem);
+      font-size: clamp(0.8rem, 1.3vw, 0.95rem);
       font-weight: 300;
       line-height: 1.8;
-      max-width: 560px;
+      max-width: 520px;
       color: rgba(244,241,235,0.65);
-      margin-bottom: 3rem;
+      margin-bottom: 2.6rem;
       opacity: 0;
       animation: rise 0.9s 0.6s forwards;
     }
@@ -106,9 +239,58 @@
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
-      justify-content: center;
       opacity: 0;
       animation: rise 0.9s 0.8s forwards;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      animation: rise 1s 0.5s forwards;
+    }
+
+    .hero-visual .cube-glow {
+      position: absolute;
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, rgba(26,107,255,0.4), rgba(0,212,170,0.12) 55%, transparent 75%);
+      filter: blur(50px);
+      animation: pulse-glow 5s ease-in-out infinite;
+    }
+
+    .hero-visual img {
+      position: relative;
+      width: min(380px, 90%);
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,0.55));
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50%      { transform: translateY(-16px) rotate(1.5deg); }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.7; transform: scale(1); }
+      50%      { opacity: 1; transform: scale(1.08); }
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero-copy { text-align: center; }
+      .tagline { margin-left: auto; margin-right: auto; }
+      .hero-actions { justify-content: center; }
+      .hero-visual { order: -1; margin-bottom: 1rem; }
+      .hero-visual img { width: 220px; }
+      .hero-visual .cube-glow { width: 240px; height: 240px; }
+    }
+
+    .btn-primary, .btn-secondary {
+      cursor: pointer;
+      font: inherit;
+      font-family: 'DM Mono', monospace;
     }
 
     .btn-primary {
@@ -118,13 +300,12 @@
       padding: 0.9rem 2.2rem;
       background: var(--signal);
       color: #fff;
-      font-family: 'DM Mono', monospace;
       font-size: 0.85rem;
       letter-spacing: 0.08em;
       text-decoration: none;
+      border: 1px solid var(--signal);
       border-radius: 3px;
       transition: all 0.25s;
-      border: 1px solid var(--signal);
     }
 
     .btn-primary:hover {
@@ -141,12 +322,11 @@
       padding: 0.9rem 2.2rem;
       background: transparent;
       color: var(--paper);
-      font-family: 'DM Mono', monospace;
       font-size: 0.85rem;
       letter-spacing: 0.08em;
       text-decoration: none;
-      border-radius: 3px;
       border: 1px solid rgba(244,241,235,0.2);
+      border-radius: 3px;
       transition: all 0.25s;
     }
 
@@ -155,12 +335,35 @@
       transform: translateY(-2px);
     }
 
-    /* ── Tutorial section ─────────────────────────────────── */
+    .scroll-cue {
+      position: absolute;
+      bottom: 1.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(244,241,235,0.35);
+      animation: bob 2.4s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes bob {
+      0%, 100% { transform: translate(-50%, 0); }
+      50%      { transform: translate(-50%, 6px); }
+    }
+
+    /* ── Sections (generic) ───────────────────────────────── */
     .section {
       position: relative;
       z-index: 1;
       padding: 7rem 2rem;
-      max-width: 900px;
+      max-width: 1080px;
       margin: 0 auto;
     }
 
@@ -177,17 +380,165 @@
       font-size: clamp(1.8rem, 4vw, 2.8rem);
       font-weight: 700;
       letter-spacing: -0.02em;
-      margin-bottom: 3rem;
+      margin-bottom: 1rem;
       line-height: 1.1;
     }
 
+    .section-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      color: rgba(244,241,235,0.5);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    /* ── Reveal-on-scroll ─────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(.2,.8,.2,1), transform 0.7s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Feature grid ─────────────────────────────────────── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.1rem;
+    }
+
+    @media (max-width: 820px) {
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .feature-grid { grid-template-columns: 1fr; }
+    }
+
+    .feature-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(244,241,235,0.09);
+      border-radius: 6px;
+      padding: 1.8rem 1.6rem;
+      transition: transform 0.3s, border-color 0.3s, background 0.3s;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(26,107,255,0.4);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .feature-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px; height: 38px;
+      margin-bottom: 1.2rem;
+      border-radius: 6px;
+      background: rgba(0,212,170,0.1);
+      color: var(--pulse);
+    }
+
+    .feature-card h3 {
+      font-size: 1.02rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-card p {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: rgba(244,241,235,0.5);
+    }
+
+    /* ── Terminal / install ────────────────────────────────── */
+    .term {
+      border-radius: 8px;
+      background: #0c0c11;
+      border: 1px solid rgba(244,241,235,0.1);
+      box-shadow: 0 30px 70px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+
+    .term-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.7rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(244,241,235,0.07);
+    }
+
+    .term-dots { display: flex; gap: 0.4rem; }
+    .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .term-dot.r { background: #ff5f57; }
+    .term-dot.y { background: #febc2e; }
+    .term-dot.g { background: #28c840; }
+
+    .term-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.7rem;
+      color: rgba(244,241,235,0.4);
+      letter-spacing: 0.04em;
+    }
+
+    .term-copy {
+      background: transparent;
+      border: none;
+      color: rgba(244,241,235,0.45);
+      cursor: pointer;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.05em;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: color 0.2s;
+    }
+
+    .term-copy:hover { color: var(--pulse); }
+
+    .term-body {
+      padding: 1.6rem 1.7rem 1.8rem;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 2;
+    }
+
+    .term-line { white-space: pre; }
+    .term-prompt { color: var(--pulse); }
+    .term-cmd { color: var(--paper); }
+    .term-comment { color: rgba(244,241,235,0.35); }
+    .term-ok { color: var(--pulse); }
+
+    .install-note {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.78rem;
+      color: rgba(244,241,235,0.45);
+      line-height: 1.8;
+      margin-top: 1.6rem;
+      max-width: 560px;
+    }
+
+    .install-note a { color: var(--signal); text-decoration: none; border-bottom: 1px solid rgba(26,107,255,0.4); }
+    .install-note a:hover { border-color: var(--signal); }
+
+    /* ── Tutorials ─────────────────────────────────────────── */
     .video-wrap {
       position: relative;
       width: 100%;
       padding-bottom: 56.25%;
       background: rgba(255,255,255,0.03);
       border: 1px solid rgba(244,241,235,0.08);
-      border-radius: 4px;
+      border-radius: 6px;
       overflow: hidden;
     }
 
@@ -239,32 +590,6 @@
       color: var(--signal);
     }
 
-    /* ── Publication badge (hero) ─────────────────────────── */
-    .pub-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 0.06em;
-      color: var(--pulse);
-      text-decoration: none;
-      padding: 0.4rem 0.9rem;
-      border: 1px solid rgba(0,212,170,0.35);
-      border-radius: 999px;
-      margin-bottom: 1.6rem;
-      opacity: 0;
-      animation: rise 0.9s 0.1s forwards;
-      transition: all 0.25s;
-    }
-
-    .pub-badge:hover {
-      background: rgba(0,212,170,0.1);
-      border-color: var(--pulse);
-    }
-
-    .pub-badge svg { flex-shrink: 0; }
-
     /* ── Publication section ──────────────────────────────── */
     .pub-card {
       position: relative;
@@ -306,12 +631,6 @@
       flex-wrap: wrap;
     }
 
-    .btn-primary, .btn-secondary {
-      cursor: pointer;
-      font: inherit;
-      font-family: 'DM Mono', monospace;
-    }
-
     button.btn-secondary {
       font-size: 0.85rem;
       letter-spacing: 0.08em;
@@ -323,7 +642,7 @@
       z-index: 1;
       height: 1px;
       background: linear-gradient(90deg, transparent, rgba(244,241,235,0.08), transparent);
-      max-width: 900px;
+      max-width: 1080px;
       margin: 0 auto;
     }
 
@@ -332,7 +651,7 @@
       position: relative;
       z-index: 1;
       padding: 5rem 2rem 6rem;
-      max-width: 900px;
+      max-width: 1080px;
       margin: 0 auto;
       display: flex;
       align-items: center;
@@ -385,24 +704,25 @@
       position: relative;
       z-index: 1;
       border-top: 1px solid rgba(244,241,235,0.06);
-      padding: 1.8rem 2rem;
+      padding: 2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
       text-align: center;
       font-family: 'DM Mono', monospace;
       font-size: 0.65rem;
-      letter-spacing: 0.12em;
-      color: rgba(244,241,235,0.2);
-      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(244,241,235,0.3);
     }
+
+    footer .fcite { text-transform: none; color: rgba(244,241,235,0.4); }
+    footer .flic { text-transform: uppercase; letter-spacing: 0.12em; color: rgba(244,241,235,0.2); }
 
     /* ── Animations ───────────────────────────────────────── */
     @keyframes rise {
       from { opacity:0; transform:translateY(18px); }
       to   { opacity:1; transform:translateY(0); }
-    }
-
-    /* ── Responsive ───────────────────────────────────────── */
-    @media (max-width: 600px) {
-      .contact { flex-direction: column; }
     }
   </style>
 </head>
@@ -426,36 +746,127 @@
   </svg>
 </div>
 
-<!-- ── Hero ─────────────────────────────────────────────── -->
-<section class="hero">
-  <a href="#publication" class="pub-badge">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2zm0 4.2 7.5 13H4.5L12 6.2z"/></svg>
-    Published in Geophysics · Vol. 91, No. 6
+<!-- ── Nav ──────────────────────────────────────────────── -->
+<nav class="nav" id="nav">
+  <a href="#top" class="nav-logo">
+    <img src="icon.png" alt="">
+    SeismicFlow
   </a>
-  <p class="eyebrow">Portable Windows Version · Free · Open Source</p>
-  <h1><span>Seismic</span><span>Flow</span></h1>
-  <p class="tagline">
-    SeismicFlow: The First Production-Grade Python-Native GUI Platform
-    for Integrated Geoscience Workflows.<br><br>
-    Requires Windows 10 or newer. For NVIDIA GPU systems, also requires
-    <a href="https://developer.nvidia.com/cuda-11-8-0-download-archive" target="_blank" style="color:#00d4aa; text-decoration:none; font-weight:500;">CUDA Toolkit 11.8</a>.
-  </p>
-  <div class="hero-actions">
-    <a href="https://huggingface.co/datasets/SeismicFlow/seismicflow/resolve/main/SeismicFlow.rar" class="btn-primary" target="_blank">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-      Download
-    </a>
-    <a href="https://github.com/SeismicFlow/SeismicFlow.github.io" class="btn-secondary" target="_blank">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
-      GitHub
-    </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#tutorials">Tutorials</a>
+    <a href="#publication">Publication</a>
+    <a href="#install">Install</a>
   </div>
+  <a href="https://github.com/SeismicFlow/SeismicFlow.github.io" class="nav-gh" target="_blank" aria-label="GitHub">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+  </a>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<section class="hero" id="top">
+  <div class="glow glow-a" aria-hidden="true"></div>
+  <div class="glow glow-b" aria-hidden="true"></div>
+
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <a href="#publication" class="pub-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 1 21h22L12 2zm0 4.2 7.5 13H4.5L12 6.2z"/></svg>
+        Published in Geophysics · Vol. 91, No. 6
+      </a>
+      <span class="eyebrow">Portable Windows Version · Free · Open Source</span>
+      <h1><span>Seismic</span><span>Flow</span></h1>
+      <p class="tagline">
+        SeismicFlow: The First Production-Grade Python-Native GUI Platform
+        for Integrated Geoscience Workflows.<br><br>
+        Requires Windows 10 or newer. For NVIDIA GPU systems, also requires
+        <a href="https://developer.nvidia.com/cuda-11-8-0-download-archive" target="_blank" style="color:#00d4aa; text-decoration:none; font-weight:500;">CUDA Toolkit 11.8</a>.
+      </p>
+      <div class="hero-actions">
+        <a href="https://huggingface.co/datasets/SeismicFlow/seismicflow/resolve/main/SeismicFlow.rar" class="btn-primary" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+          Download
+        </a>
+        <a href="https://github.com/SeismicFlow/SeismicFlow.github.io" class="btn-secondary" target="_blank">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="cube-glow"></div>
+      <img src="splash.png" alt="3D rendering of an interpreted seismic volume in SeismicFlow">
+    </div>
+  </div>
+
+  <div class="scroll-cue">Scroll &#8595;</div>
 </section>
 
+<!-- ── Features ─────────────────────────────────────────── -->
+<div class="section reveal" id="features">
+  <p class="section-label">// why seismicflow</p>
+  <h2 class="section-title">One app, the whole workflow</h2>
+  <p class="section-sub">From SEG-Y and well logs to trained ML models and 3D volume rendering &mdash; SeismicFlow keeps the entire interpretation pipeline in a single, native Python application.</p>
+
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v2H4zm0 7h10v2H4zm0 7h16v2H4zm12-9h4v2h-4z"/></svg>
+      </div>
+      <h3>Integrated Workflows</h3>
+      <p>Seismic interpretation, well log analysis, and machine learning live in one application &mdash; no exporting between tools.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 2 7v10l10 5 10-5V7L12 2zm0 2.2L19 8l-7 3.5L5 8l7-3.8zM4 9.4l7 3.5v7.7l-7-3.5V9.4zm9 11.2v-7.7l7-3.5v7.7l-7 3.5z"/></svg>
+      </div>
+      <h3>Built-in ML &amp; AI</h3>
+      <p>PyTorch, TensorFlow, XGBoost, CatBoost, LightGBM, and TabNet are ready to use out of the box &mdash; no extra setup.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>3D Visualization</h3>
+      <p>Hardware-accelerated rendering of seismic volumes, powered by VTK and OpenGL.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </div>
+      <h3>SEG-Y &amp; Well Data</h3>
+      <p>Native support for industry-standard seismic and well formats, with built-in geospatial tooling via pyproj.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>
+      </div>
+      <h3>GPU-Accelerated, CPU-Ready</h3>
+      <p>Optional CUDA acceleration speeds up neural network training &mdash; every feature also runs fully on CPU.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="feature-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm1 15h-2v-2h2zm0-4h-2V7h2z"/></svg>
+      </div>
+      <h3>Free &amp; Open Source</h3>
+      <p>GPL-3.0 licensed and peer-reviewed &mdash; no license fees, no vendor lock-in, source available on GitHub.</p>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
 <!-- ── Tutorials ─────────────────────────────────────────── -->
-<div class="section">
+<div class="section reveal" id="tutorials">
   <p class="section-label">// tutorials</p>
   <h2 class="section-title">See it in action</h2>
+  <p class="section-sub">Walkthroughs of installation, seismic interpretation, and the ML toolkit.</p>
 
   <div class="video-wrap">
     <iframe id="yt" src="https://www.youtube.com/embed/ffbvSpZ_S_E" allowfullscreen loading="lazy"></iframe>
@@ -474,7 +885,7 @@
 <div class="divider"></div>
 
 <!-- ── Publication ───────────────────────────────────────── -->
-<div class="section" id="publication">
+<div class="section reveal" id="publication">
   <p class="section-label">// publication</p>
   <h2 class="section-title">Peer-reviewed &amp; published</h2>
 
@@ -500,8 +911,45 @@
 
 <div class="divider"></div>
 
+<!-- ── Install ───────────────────────────────────────────── -->
+<div class="section reveal" id="install">
+  <p class="section-label">// quick start</p>
+  <h2 class="section-title">Up and running in one command</h2>
+  <p class="section-sub">Download the release files into a folder, then run the installer. It builds a fully isolated Python environment &mdash; your system Python is never touched.</p>
+
+  <div class="term">
+    <div class="term-bar">
+      <div class="term-dots">
+        <span class="term-dot r"></span>
+        <span class="term-dot y"></span>
+        <span class="term-dot g"></span>
+      </div>
+      <span class="term-title">~/SeismicFlow</span>
+      <button class="term-copy" onclick="copyInstall()" id="install-copy">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+        Copy
+      </button>
+    </div>
+    <div class="term-body">
+      <div class="term-line"><span class="term-prompt">$</span> <span class="term-cmd">python install.py</span></div>
+      <div class="term-line term-comment">&gt; detecting platform... Linux (system Python 3.10)</div>
+      <div class="term-line term-comment">&gt; creating isolated virtual environment...</div>
+      <div class="term-line term-comment">&gt; installing PyTorch, TensorFlow &amp; dependencies...</div>
+      <div class="term-line term-ok">&gt; done. Launch with ./SeismicFlow.sh</div>
+    </div>
+  </div>
+
+  <p class="install-note">
+    Works on Windows 10/11 and modern 64-bit Linux. GPU acceleration is optional &mdash; every feature also runs on CPU only.
+    Full installation steps, required files, and troubleshooting are in the
+    <a href="https://github.com/SeismicFlow/SeismicFlow.github.io/blob/main/README.md" target="_blank">README</a>.
+  </p>
+</div>
+
+<div class="divider"></div>
+
 <!-- ── Contact ───────────────────────────────────────────── -->
-<div class="contact">
+<div class="contact reveal">
   <div class="contact-left">
     <p class="section-label">// contact</p>
     <p>Questions, collaborations,<br>or just want to say hello.</p>
@@ -520,7 +968,8 @@
 
 <!-- ── Footer ─────────────────────────────────────────────── -->
 <footer>
-  Mahzad, M. (2026). SeismicFlow. <em>Geophysics</em>, 91(6), F13&ndash;F21. doi.org/10.1190/GEO-2025-1020
+  <span class="fcite">Mahzad, M. (2026). SeismicFlow. <em>Geophysics</em>, 91(6), F13&ndash;F21. doi.org/10.1190/GEO-2025-1020</span>
+  <span class="flic">GPL-3.0 Licensed · Free &amp; Open Source</span>
 </footer>
 
 <script>
@@ -552,19 +1001,53 @@
   doi     = {10.1190/GEO-2025-1020}
 }`;
 
+  function flashCopied(btn, label) {
+    const original = btn.innerHTML;
+    btn.innerHTML = label;
+    setTimeout(() => { btn.innerHTML = original; }, 1800);
+  }
+
   function copyCitation() {
     const btn = document.getElementById('cite-btn');
-    const original = btn.innerHTML;
-    const done = () => {
-      btn.innerHTML = 'Copied!';
-      setTimeout(() => { btn.innerHTML = original; }, 1800);
-    };
+    const svg = btn.querySelector('svg').outerHTML;
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(bibtex).then(done).catch(() => window.prompt('Copy BibTeX:', bibtex));
+      navigator.clipboard.writeText(bibtex)
+        .then(() => flashCopied(btn, svg + ' Copied!'))
+        .catch(() => window.prompt('Copy BibTeX:', bibtex));
     } else {
       window.prompt('Copy BibTeX:', bibtex);
     }
   }
+
+  function copyInstall() {
+    const btn = document.getElementById('install-copy');
+    const cmd = 'python install.py';
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(cmd)
+        .then(() => flashCopied(btn, 'Copied!'))
+        .catch(() => window.prompt('Copy command:', cmd));
+    } else {
+      window.prompt('Copy command:', cmd);
+    }
+  }
+
+  // Nav background on scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Reveal-on-scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 </script>
 
 </body>
