@@ -1,230 +1,294 @@
+<div align="center">
+
+<img src="icon.png" width="88" alt="SeismicFlow icon">
+
 # SeismicFlow
 
 **The First Production-Grade Python-Native GUI Platform for Integrated Geoscience Workflows**
 
-SeismicFlow is a standalone GUI application for geophysical and well data analysis, designed for scientists and researchers who want flexibility in algorithm development.
+[![DOI](https://img.shields.io/badge/DOI-10.1190%2FGEO--2025--1020-blue?style=flat-square)](https://doi.org/10.1190/GEO-2025-1020)
+[![Published in Geophysics](https://img.shields.io/badge/Published%20in-Geophysics-1a6bff?style=flat-square)](https://doi.org/10.1190/GEO-2025-1020)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-00d4aa?style=flat-square)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-333333?style=flat-square)](#system-requirements)
+[![Python 3.10](https://img.shields.io/badge/Python-3.10-3776ab?style=flat-square&logo=python&logoColor=white)](#system-requirements)
+
+<img src="splash.png" width="260" alt="Interpreted 3D seismic volume rendered in SeismicFlow">
+
+*A 3D seismic volume rendered inside SeismicFlow*
+
+</div>
+
+---
+
+SeismicFlow is a standalone GUI application for geophysical and well data analysis, designed for scientists and researchers who want flexibility in algorithm development — seismic interpretation, well logs, and a full machine-learning toolkit in a single native Python app.
+
+**Site:** [seismicflow.github.io](https://seismicflow.github.io) · **Contact:** [seismicflowinc@gmail.com](mailto:seismicflowinc@gmail.com) · **YouTube:** [@Seismicflow-inc](https://www.youtube.com/@Seismicflow-inc)
+
+## Contents
+
+- [Why SeismicFlow](#why-seismicflow)
+- [Tutorials](#tutorials)
+- [Citation](#citation)
+- [System Requirements](#system-requirements)
+- [Required Files](#required-files)
+- [Installation](#installation)
+- [How It Works](#how-it-works)
+- [GPU Acceleration Setup](#gpu-acceleration-setup-optional)
+- [Troubleshooting](#troubleshooting)
+- [Uninstallation](#uninstallation)
+- [Verification](#verification)
+- [Example Dataset](#example-dataset)
+- [Technical Details](#technical-details)
+- [Support](#support)
+
+## Why SeismicFlow
+
+- 🧩 **Integrated Workflows** — seismic interpretation, well log analysis, and machine learning live in one application, no exporting between tools.
+- 🤖 **Built-in ML & AI** — PyTorch, TensorFlow, XGBoost, CatBoost, LightGBM, and TabNet, ready to use out of the box.
+- 🧊 **3D Visualization** — hardware-accelerated rendering of seismic volumes, powered by VTK and OpenGL.
+- 📡 **SEG-Y & Well Data** — native support for industry-standard formats via `segyio`, with geospatial tooling built in via `pyproj`.
+- ⚡ **GPU-Accelerated, CPU-Ready** — optional CUDA acceleration for neural network workloads; every feature also runs fully on CPU.
+- 🆓 **Free & Open Source** — GPL-3.0 licensed and peer-reviewed, no license fees, no vendor lock-in.
+
+## Tutorials
+
+<div align="center">
+
+[![Tutorial 1](https://img.youtube.com/vi/ffbvSpZ_S_E/mqdefault.jpg)](https://www.youtube.com/watch?v=ffbvSpZ_S_E)
+[![Tutorial 2](https://img.youtube.com/vi/OksKVXDVJkY/mqdefault.jpg)](https://www.youtube.com/watch?v=OksKVXDVJkY)
+
+[![Tutorial 3](https://img.youtube.com/vi/ujZ7r0A36G8/mqdefault.jpg)](https://www.youtube.com/watch?v=ujZ7r0A36G8)
+[![Tutorial 4](https://img.youtube.com/vi/23w2LFARhwA/mqdefault.jpg)](https://www.youtube.com/watch?v=23w2LFARhwA)
+
+More on the [SeismicFlow YouTube channel](https://www.youtube.com/@Seismicflow-inc).
+
+</div>
+
+## Citation
+
+SeismicFlow has been peer-reviewed and published in *Geophysics*:
+
+> Mahzad, M. (2026). SeismicFlow: The first production-grade Python-native GUI platform for integrated geoscience workflows. *Geophysics*, 91(6), F13–F21. https://doi.org/10.1190/GEO-2025-1020
+
+If SeismicFlow is useful in your research, please cite the paper above. BibTeX:
+
+```bibtex
+@article{Mahzad2026SeismicFlow,
+  author  = {Mahzad, M.},
+  title   = {SeismicFlow: The first production-grade Python-native GUI platform for integrated geoscience workflows},
+  journal = {Geophysics},
+  year    = {2026},
+  volume  = {91},
+  number  = {6},
+  pages   = {F13--F21},
+  doi     = {10.1190/GEO-2025-1020}
+}
+```
 
 ## System Requirements
 
-- **Operating System**: Windows 10/11 (64-bit) or Linux (modern 64-bit distributions)
-- **Python**: Any version of Python to run the installer
-  - **Windows**: the installer will set up a portable Python 3.10 automatically
-  - **Linux**: the installer uses your system Python (Python 3.10 preferred, required by the pinned versions of PyTorch 2.0.0 and TensorFlow 2.10.1)
-- **Disk Space**: Approximately 8 GB for complete installation
-- **GPU (Optional)**: NVIDIA GPU with CUDA 11.7 for faster neural network processing
-  - **Note**: GPU is NOT required - the application runs perfectly on CPU only
-  - GPU acceleration only speeds up neural network algorithms
-  - All features work without GPU, just slower for ML tasks
-  - On both platforms, the installer attempts a GPU-enabled PyTorch install first and automatically falls back to CPU-only if the GPU install times out or fails
+| | Requirement |
+|---|---|
+| **Operating System** | Windows 10/11 (64-bit) or Linux (modern 64-bit distributions) |
+| **Python** | Any version to run the installer — Windows gets a portable Python 3.10 automatically; Linux uses your system Python (3.10 preferred) |
+| **Disk Space** | ~8 GB for a complete installation |
+| **GPU** | Optional — NVIDIA GPU with CUDA 11.7 speeds up neural network processing. Every feature works on CPU only, just slower for ML tasks. The installer tries a GPU-enabled PyTorch install first and falls back to CPU-only automatically if it times out or fails. |
 
 ## Required Files
 
-Download ALL of these files from the repository and place them in the same folder:
+Download **all** of these files from the repository and place them in the same folder:
 
-### Application Files:
-- `SeismicFlow.py` (main application)
-- `install.py` (automated installer)
-- `requirements.txt` (dependencies list)
+**Application files:** `SeismicFlow.py` · `install.py` · `requirements.txt`
 
-### GUI Assets (Required):
-- `splash.png`
-- `white-terminal.png`
-- `black-terminal.png`
-- `busy.gif`
-- `busy.png`
-- `icon.png`
+**GUI assets (required):** `splash.png` · `white_terminal.png` · `black_terminal.png` · `busy.gif` · `busy.png` · `icon.png`
 
-**Important**: All files must be in the same directory for the application to work properly.
+> All files must be in the same directory for the application to work properly.
 
 ## Installation
 
-### Simple One-Step Installation
+This method is **completely self-contained** and will not affect any existing Python installations on your system. The installer detects Windows vs. Linux automatically — no manual configuration needed.
 
-This installation method is **completely self-contained** and will not affect any existing Python installations on your system. The installer automatically detects whether you're running Windows or Linux and follows the appropriate installation path — no manual configuration needed.
+**1. Download all files** into a folder where you want SeismicFlow installed (e.g. `C:\SeismicFlow` on Windows, `~/SeismicFlow` on Linux).
 
-#### Step 1: Download All Files
-Download all the files listed above from this repository and place them in a folder where you want SeismicFlow to be installed (e.g., `C:\SeismicFlow` on Windows or `~/SeismicFlow` on Linux).
-
-#### Step 2: Run the Installer
-Open Command Prompt (Windows) or a Terminal (Linux), navigate to your folder, and run:
+**2. Run the installer** from a terminal in that folder — any Python you already have installed works:
 
 ```bash
 python install.py
 ```
 
-**Note**: You can use ANY version of Python you already have installed to run `install.py`.
+**3. Launch SeismicFlow:**
+- **Windows** — double-click `SeismicFlow.bat`
+- **Linux** — run `./SeismicFlow.sh`
 
-- **On Windows**, the installer automatically downloads and sets up a portable Python 3.10 in a separate, isolated environment within your chosen folder.
-- **On Linux**, the installer locates your system Python (preferring Python 3.10) and creates a standard virtual environment using `virtualenv` within your chosen folder.
+<details>
+<summary><strong>What the installer does on Windows</strong></summary>
 
-#### What the Installer Does:
-
-**On Windows:**
-1. Downloads a portable Python 3.10 installation (no administrator rights needed)
+1. Downloads a portable Python 3.10 (no administrator rights needed)
 2. Creates an isolated virtual environment
-3. Installs PyTorch 2.0.0 with CUDA 11.7 support (falls back to CPU-only automatically if the GPU install fails or times out)
+3. Installs PyTorch 2.0.0 with CUDA 11.7 support (falls back to CPU-only automatically if it fails or times out)
 4. Installs TensorFlow 2.10.1
-5. Installs all other required dependencies from `requirements.txt`
-6. Creates `SeismicFlow.bat` launcher
+5. Installs all other dependencies from `requirements.txt`
+6. Creates the `SeismicFlow.bat` launcher
 
-**On Linux:**
-1. Locates your system Python (Python 3.10 preferred)
-2. Creates a standard virtual environment using `virtualenv`
-3. Installs PyTorch 2.0.0 with CUDA 11.7 support (falls back to CPU-only automatically if the GPU install fails or times out)
+</details>
+
+<details>
+<summary><strong>What the installer does on Linux</strong></summary>
+
+1. Locates your system Python (3.10 preferred)
+2. Creates a standard virtual environment with `virtualenv`
+3. Installs PyTorch 2.0.0 with CUDA 11.7 support (falls back to CPU-only automatically if it fails or times out)
 4. Installs TensorFlow 2.10.1
-5. Installs all other required dependencies from `requirements.txt`, automatically detecting and excluding Windows-only packages (e.g. `pywin32`), which have no Linux distribution
-6. Creates `SeismicFlow.sh` launcher
+5. Installs all other dependencies from `requirements.txt`, automatically excluding Windows-only packages (e.g. `pywin32`)
+6. Creates the `SeismicFlow.sh` launcher
 
-**Everything is self-contained**: The installer creates a complete Python environment inside your chosen directory. Your system's Python installation and other Python projects remain completely unaffected.
+</details>
 
-#### Step 3: Launch SeismicFlow
-After installation completes:
-
-- **Windows**: double-click `SeismicFlow.bat`
-- **Linux**: run `./SeismicFlow.sh` from a terminal in your installation folder
-
-The application will launch with its own dedicated Python environment.
+Everything is self-contained — the installer builds a complete Python environment inside your chosen directory. Your system Python and other projects are never touched.
 
 ## How It Works
-
-The installation creates the following structure in your directory:
 
 ```
 YourFolder/
 ├── SeismicFlow.py          (main application)
 ├── install.py              (installer script)
 ├── requirements.txt        (dependencies)
-├── splash.png              (GUI assets)
-├── white-terminal.png      (GUI assets)
-├── black-terminal.png      (GUI assets)
-├── busy.gif                (GUI assets)
-├── busy.png                (GUI assets)
-├── icon.png                (GUI assets)
+├── splash.png              (GUI asset)
+├── white_terminal.png      (GUI asset)
+├── black_terminal.png      (GUI asset)
+├── busy.gif                (GUI asset)
+├── busy.png                (GUI asset)
+├── icon.png                (GUI asset)
 ├── python310/              (portable Python — Windows only, created by installer)
-├── venv/                   (virtual environment — created by installer on both platforms)
-├── SeismicFlow.bat         (Windows launcher — created by installer on Windows)
-└── SeismicFlow.sh          (Linux launcher — created by installer on Linux)
+├── venv/                   (virtual environment — created on both platforms)
+├── SeismicFlow.bat         (Windows launcher)
+└── SeismicFlow.sh          (Linux launcher)
 ```
 
-**Key Benefits**:
-- No system-wide Python installation required (Windows) / no conflict with system Python (Linux)
-- No conflicts with other Python projects
-- Complete isolation from other environments
-- Easy to uninstall: just delete the entire folder
-- No registry modifications or system changes (Windows)
-- Works without administrator privileges
+**Key benefits:** no system-wide Python install required · no conflicts with other Python projects · fully isolated · delete the folder to uninstall · no registry changes · no administrator privileges needed.
 
 ## GPU Acceleration Setup (Optional)
 
-**For NVIDIA GPU users only:**
+<details>
+<summary><strong>For NVIDIA GPU users only</strong></summary>
 
-1. Check if you have an NVIDIA GPU:
-   - **Windows**: Open Device Manager → Display adapters, and look for "NVIDIA" in the graphics card name
-   - **Linux**: Run `lspci | grep -i nvidia` in a terminal, or run `nvidia-smi` if drivers are already installed
+1. **Check for an NVIDIA GPU:**
+   - Windows: Device Manager → Display adapters → look for "NVIDIA"
+   - Linux: `lspci | grep -i nvidia`, or `nvidia-smi` if drivers are installed
 
-2. If you have an NVIDIA GPU, install CUDA Toolkit 11.7:
-   - Download from: https://developer.nvidia.com/cuda-11-7-0-download-archive
-   - **Windows**: Choose "Windows", select your version and architecture (x86_64), and follow the installer instructions, then restart your computer
-   - **Linux**: Choose "Linux", select your distribution and architecture, and follow the distribution-specific install instructions (runfile, package manager, etc.) provided on the download page
+2. **Install CUDA Toolkit 11.7** from [NVIDIA's archive](https://developer.nvidia.com/cuda-11-7-0-download-archive):
+   - Windows: choose "Windows", your version/architecture (x86_64), follow the installer, then restart
+   - Linux: choose "Linux", your distribution/architecture, follow the distribution-specific instructions
 
-**Important**: GPU setup is completely optional. The application works perfectly without GPU acceleration on either platform. The installer will automatically fall back to a CPU-only PyTorch install if it cannot complete a GPU-enabled install.
+GPU setup is entirely optional — SeismicFlow works perfectly without it on either platform, and the installer falls back to CPU-only automatically if a GPU install fails.
+
+</details>
 
 ## Troubleshooting
 
-### Common Issues and Solutions
+<details>
+<summary><strong>"Python not found" when running <code>install.py</code></strong></summary>
 
-**Issue**: "Python not found" error when running `install.py`  
-**Solution**: You need at least one Python installation (any version) to run the installer. Download Python from python.org (Windows) or install it via your distribution's package manager, e.g. `sudo apt install python3` (Linux).
+You need at least one Python installation (any version) to run the installer. Get Python from [python.org](https://python.org) (Windows) or your distro's package manager, e.g. `sudo apt install python3` (Linux).
 
-**Issue**: ModuleNotFoundError: No module named 'tensorflow.keras.wrappers.scikit_learn'  
-**Solution**: This error means TensorFlow was installed manually at a version newer than 2.10.1. SeismicFlow is specifically built on TensorFlow 2.10.1. All imports and ML workflows in the application are written against this version, and installing a newer version will break these imports — correcting the import statement alone (e.g. switching to `scikeras`) will not resolve the underlying mismatch. Do not install TensorFlow or PyTorch manually — these two libraries are intentionally absent from `requirements.txt` and are handled exclusively by `install.py`, which installs TensorFlow 2.10.1 at the correct version automatically on both Windows and Linux. If you have already installed a different version, delete the `venv` folder, run `python install.py` again in a clean directory, and launch via `SeismicFlow.bat` (Windows) or `SeismicFlow.sh` (Linux).
+</details>
 
-**Issue**: ImportError related to `win32api` or other Windows-only modules (Linux)  
-**Solution**: This should not occur in the current version — Windows-only imports in `SeismicFlow.py` are now conditional and only load on Windows. If you encounter this on Linux, ensure you're running the current version of `SeismicFlow.py` and that the installer completed without errors.
+<details>
+<summary><strong><code>ModuleNotFoundError: No module named 'tensorflow.keras.wrappers.scikit_learn'</code></strong></summary>
 
-**Issue**: Installation fails or gets stuck  
-**Solution**: 
+This means TensorFlow was installed manually at a version newer than 2.10.1. SeismicFlow's imports and ML workflows are written against 2.10.1 specifically — installing a newer version breaks them, and fixing the import alone (e.g. switching to `scikeras`) won't resolve the underlying mismatch.
+
+Don't install TensorFlow or PyTorch manually — they're intentionally absent from `requirements.txt` and handled exclusively by `install.py`. If you've already installed a different version: delete the `venv` folder, run `python install.py` again in a clean directory, then launch via `SeismicFlow.bat`/`SeismicFlow.sh`.
+
+</details>
+
+<details>
+<summary><strong><code>win32api</code> / Windows-only ImportError on Linux</strong></summary>
+
+This shouldn't happen in the current version — Windows-only imports in `SeismicFlow.py` are conditional and only load on Windows. If you hit this, make sure you're on the current version and that the installer completed without errors.
+
+</details>
+
+<details>
+<summary><strong>Installation fails or gets stuck</strong></summary>
+
 - Check your internet connection
-- Ensure you have sufficient disk space (8 GB required)
-- **Windows**: Run Command Prompt as Administrator if you encounter permission errors
-- **Linux**: Ensure your user has write permissions to the installation folder; avoid running with `sudo` unless necessary
+- Ensure you have enough disk space (8 GB required)
+- Windows: run Command Prompt as Administrator if you hit permission errors
+- Linux: ensure write permissions on the install folder; avoid `sudo` unless necessary
 
-**Issue**: `SeismicFlow.bat` / `SeismicFlow.sh` doesn't launch the application  
-**Solution**: 
-- Ensure `install.py` completed successfully without errors
+</details>
+
+<details>
+<summary><strong><code>SeismicFlow.bat</code> / <code>SeismicFlow.sh</code> doesn't launch the app</strong></summary>
+
+- Ensure `install.py` completed successfully
 - Check that all GUI asset files (`.png`, `.gif`) are in the same directory
-- **Linux**: ensure the launcher is executable (`chmod +x SeismicFlow.sh`)
-- Try running from a terminal/Command Prompt to see any error messages
+- Linux: make sure the launcher is executable — `chmod +x SeismicFlow.sh`
+- Run from a terminal/Command Prompt to see the actual error
 
-**Issue**: Missing image errors when running SeismicFlow  
-**Solution**: Make sure all required `.png` and `.gif` files are in the same folder as `SeismicFlow.py`
+</details>
 
-**Issue**: Slow performance on neural network operations  
-**Solution**: This is normal for CPU-only systems. Consider GPU setup for faster processing.
+<details>
+<summary><strong>Missing image errors when running SeismicFlow</strong></summary>
+
+Make sure all required `.png` and `.gif` files are in the same folder as `SeismicFlow.py`.
+
+</details>
+
+<details>
+<summary><strong>Slow performance on neural network operations</strong></summary>
+
+Normal for CPU-only systems — consider [GPU setup](#gpu-acceleration-setup-optional) for faster processing.
+
+</details>
 
 ## Uninstallation
 
-To completely remove SeismicFlow:
-
-1. Simply delete the entire installation folder
-2. No registry cleaning or system changes needed (Windows)
-3. No traces left on your system
+Delete the entire installation folder. No registry cleaning, no leftover system changes.
 
 ## Verification
 
-After installation, when you launch SeismicFlow, you should see:
+After installation, launching SeismicFlow should show:
 1. The SeismicFlow splash screen
-2. The main GUI interface with all menus and tools available
+2. The main GUI with all menus and tools available
 3. No error messages in the terminal window
 
 ## Example Dataset
 
-To get started immediately after installation, we recommend using the *Netherlands Offshore F3 Block — the most widely used open-access 3D seismic dataset in geophysical research, available free of charge under a Creative Commons license.
+Get started immediately with the **Netherlands Offshore F3 Block** — the most widely used open-access 3D seismic dataset in geophysical research, free under a Creative Commons license.
 
-### Download the F3 Netherlands Dataset
-- Download link: https://terranubis.com/download/F3_Demo_2023.zip/2
-
-### Loading into SeismicFlow
-1.	Download the dataset from the link above and unzip it
-2.	Launch SeismicFlow using `SeismicFlow.bat` (Windows) or `./SeismicFlow.sh` (Linux)
-3.	Go to File → Open → SEGY
-4.	Navigate to F3_Demo_2020\F3_Demo_2020\Rawdata and select Seismic_data.sgy
-5.	The volume will be loaded and added to the data tree
+1. Download and unzip: [F3_Demo_2023.zip](https://terranubis.com/download/F3_Demo_2023.zip/2)
+2. Launch SeismicFlow (`SeismicFlow.bat` / `./SeismicFlow.sh`)
+3. Go to **File → Open → SEGY**
+4. Navigate to `F3_Demo_2020\F3_Demo_2020\Rawdata` and select `Seismic_data.sgy`
+5. The volume loads and appears in the data tree
 
 ## Technical Details
 
-- **Framework**: Qt-based GUI (cross-platform compatible)
-- **ML Libraries**: PyTorch 2.0.0, TensorFlow 2.10.1
-- **CUDA Support**: Version 11.7 (optional, on both platforms)
-- **Python Version**: 3.10 (automatically installed on Windows; system Python preferred on Linux)
-- **Installation Type**: Fully portable and self-contained
-- **Supported Platforms**: Windows 10/11 (64-bit), Linux (modern 64-bit distributions)
-- **Dependencies**: Automatically installed via `install.py`, with platform-specific exclusions (e.g. `pywin32` is excluded on Linux)
+| | |
+|---|---|
+| **Framework** | Qt-based GUI (cross-platform) |
+| **ML Libraries** | PyTorch 2.0.0, TensorFlow 2.10.1, XGBoost, CatBoost, LightGBM, TabNet |
+| **Visualization** | VTK, OpenGL, PyQtGraph |
+| **CUDA Support** | Version 11.7 (optional, both platforms) |
+| **Python Version** | 3.10 (auto-installed on Windows; system Python preferred on Linux) |
+| **Installation Type** | Fully portable and self-contained |
+| **Supported Platforms** | Windows 10/11 (64-bit), Linux (modern 64-bit) |
+| **License** | GPL-3.0 |
 
 ## Support
 
-For tutorials, updates, and support:
-- **YouTube**: [https://www.youtube.com/@Seismicflow-inc](https://www.youtube.com/@Seismicflow-inc)
-- **Email**: seismicflowinc@gmail.com
+- **YouTube**: [@Seismicflow-inc](https://www.youtube.com/@Seismicflow-inc)
+- **Email**: [seismicflowinc@gmail.com](mailto:seismicflowinc@gmail.com)
 
-If you encounter any issues:
-1. Ensure you downloaded ALL required files
-2. Verify all files are in the same directory
-3. Check that `install.py` completed without errors
-4. Ensure you have sufficient disk space and internet connection
-5. **Windows**: Try running as Administrator if permission errors occur
-6. **Linux**: Verify file permissions and avoid unnecessary use of `sudo`
-
-## Why This Installation Method?
-
-Traditional Python installations can be complex and create conflicts between different projects. SeismicFlow uses a portable, platform-aware installation approach that:
-
-- **Just Works**: No dependency conflicts or version mismatches, on Windows or Linux
-- **Clean**: Completely isolated from your system
-- **Simple**: One command to install, one click (or one command) to run
-- **Safe**: Delete the folder to completely remove everything
-- **Professional**: Production-grade environment setup across platforms
+If you hit issues: confirm you downloaded **all** required files into the same directory, that `install.py` completed without errors, and that you have enough disk space and a working internet connection. Windows users can try running as Administrator; Linux users should check file permissions and avoid unnecessary `sudo`.
 
 ---
 
-*SeismicFlow: Professional geophysical analysis made accessible*
+<div align="center">
+
+*SeismicFlow: Professional geophysical analysis made accessible.*
+GPL-3.0 Licensed · Peer-Reviewed in *Geophysics*
+
+</div>
